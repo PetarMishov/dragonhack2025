@@ -9,12 +9,13 @@ import { GetScenariosService } from '../../services/get-scenarios/get-scenarios.
 import { BackgroundComponent } from '../background/background/background.component';
 import { FormsModule } from '@angular/forms';
 import { PostMessageService } from '../../services/post-message/post-message.service.spec';
+import { NewLinePipe } from '../../pipes/new-line.pipe';
 
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, BackgroundComponent, FormsModule],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent, FormsModule, NewLinePipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })

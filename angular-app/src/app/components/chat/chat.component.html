@@ -13,6 +13,7 @@
         <ul class="chat-list" >
           <li>
             <button *ngFor="let chat of chats" class="chat-item" (click)="changeChat(chat._id)">{{ chat.title }}</button>
+
           </li>
         </ul>
       </div>
@@ -26,9 +27,7 @@
             'from-character': message.role !== 'user'
           }"
         >
-          <div class="message-bubble">
-            {{ message.content }}
-          </div>
+          <div class="message-bubble" [innerHTML]="message.content | newLine"></div>
         </div>
       </div>
 
