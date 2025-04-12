@@ -33,8 +33,8 @@
 
       <div class="chat-sidebar" *ngIf="chats">
         <ul class="chat-list" >
-          <li class="chat-item" *ngFor="let chat of chats">
-            <span>{{ chat.title }}</span>
+          <li *ngFor="let chat of chats">
+            <button class="chat-item" (click)="changeChat(chat.id)">{{ chat.title }}</button>
             <!-- <app-card></app-card> -->
             <!-- <app-card></app-card> -->
           </li>

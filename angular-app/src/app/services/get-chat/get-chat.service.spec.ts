@@ -11,8 +11,8 @@ import { retry, Observable, throwError, catchError } from 'rxjs';
 export class GetChatService {
   constructor(private readonly http: HttpClient) {}
 
-  public getChatById(): Observable<Chat> {
-    const url: string = `${environment.apiUrl}/chat/chats`;
+  public getChatById(id : string): Observable<Chat> {
+    const url: string = `${environment.apiUrl}/chat/chats/${id}`;
     return this.http
       .get<Chat>(url)
       .pipe(retry(1), catchError(this.handleError));

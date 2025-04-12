@@ -32,11 +32,16 @@ export class ChatComponent {
     })
   }
 
-  private getChatById(){
-    this.getChatService.getChatById()
+  private getChatById(id : string){
+    this.getChatService.getChatById(id)
     .subscribe((out_chat) => {
       this.current_chat = out_chat
     })
   }
+
+  public changeChat(id : string){
+    this.getChatById(id)
+  }
+
 
 }
