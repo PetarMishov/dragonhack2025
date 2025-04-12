@@ -11,12 +11,21 @@
         </ul>
     </div>
 
-    <!-- <div class="scenario-sidebar" *ngIf="selected_persona">
+    <div class="scenario-sidebar" *ngIf="selected_persona">
         <ul class="chat-list">
             <li>
-                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
+                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario, title)">{{
                     scenario.title }}</button>
             </li>
         </ul>
-    </div> -->
+    </div>
+
+    <div class="chat-input-container">
+        <input
+          type="text"
+          class="chat-input"
+          placeholder="Conversation title"
+          [(ngModel)]="title"
+        />
+      </div>
 </body>

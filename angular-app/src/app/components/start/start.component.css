@@ -104,7 +104,7 @@ app-card {
 
 .chat-input-container {
   position: fixed;
-  bottom: 20px;
+  top: 100px;
   left: 280px;   /* align with left sidebar */
   right: 320px;  /* align with right sidebar */
   display: flex;
