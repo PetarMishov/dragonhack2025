@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChatComponent } from './chat.component';
+import { NewLinePipe } from '../../pipes/new-line.pipe';
+import { DomSanitizer } from '@angular/platform-browser';
 
 describe('ChatComponent', () => {
   let component: ChatComponent;

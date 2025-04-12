@@ -27,9 +27,7 @@
             'from-character': message.role !== 'user'
           }"
         >
-          <div class="message-bubble">
-            {{ message.content }}
-          </div>
+          <div class="message-bubble" [innerHTML]="message.content | newLine"></div>
         </div>
       </div>
 
