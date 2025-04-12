@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Chat } from '../../classes/chat';
+import { Scenario } from '../../classes/scenario';
 import { environment } from '../../../environments/environment';
 import { retry, Observable, throwError, catchError } from 'rxjs';
 import { map } from 'rxjs';
@@ -10,13 +10,13 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 
-export class GetChatService {
+export class GetScenariosService {
   constructor(private readonly http: HttpClient) {}
 
-  public getChatById(id : string): Observable<Chat> {
-    const url: string = `${environment.apiUrl}/chat/chat/${id}`;
+  public getScenariosById(id : string): Observable<Scenario[]> {
+    const url: string = `${environment.apiUrl}/chat/scenarios/character/${id}`;
     return this.http
-          .get<{ success: boolean; data: Chat }>(url)
+          .get<{ success: boolean; data: Scenario[] }>(url)
           .pipe(
             retry(1),
             map(response => response.data || []), // ✅ Extract `data`

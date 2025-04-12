@@ -1,48 +1,37 @@
 <router-outlet></router-outlet>
 <body>
-    <div class="video-container">
-        <video autoplay muted loop id="bg-video">
-            <source src="/images/background_vid.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-      <div class="scenario-sidebar">
-        <ul class="chat-list">
-          <li class="chat-item">
-            <span>Scenario 1</span>
-            <!-- <app-card></app-card> -->
-             <!-- <app-card></app-card> -->
-          </li>
-          <li class="chat-item">
-            <span>Scenario 2</span>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
-          </li>
-          <li class="chat-item">
-            <span>Scenario 3</span>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
-          </li>
-          <li class="chat-item">
-            <span>Scenario 4</span>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
+      <app-background></app-background>    
+      <div class="scenario-sidebar" *ngIf="scenarios">
+        <ul class="chat-list" >
+          <li>
+            <button *ngFor="let scenario of scenarios" class="chat-item">{{ scenario.title }}</button>
           </li>
         </ul>
       </div>
 
       <div class="chat-sidebar" *ngIf="chats">
         <ul class="chat-list" >
-          <li *ngFor="let chat of chats">
-            <button class="chat-item" (click)="changeChat(chat.id)">{{ chat.title }}</button>
+          <li>
+            <button *ngFor="let chat of chats" class="chat-item" (click)="changeChat(chat._id)">{{ chat.title }}</button>
             <!-- <app-card></app-card> -->
             <!-- <app-card></app-card> -->
           </li>
         </ul>
       </div>
 
-      <div class="main-content">
-        <!-- Chat content goes here -->
+      <div class="main-content" *ngIf="current_chat">
+        <div
+          *ngFor="let message of current_chat.messages"
+          [ngClass]="{
+            'message-row': true,
+            'from-user': message.role === 'user',
+            'from-character': message.role !== 'user'
+          }"
+        >
+          <div class="message-bubble">
+            {{ message.content }}
+          </div>
+        </div>
       </div>
 
       <div class="chat-input-container">

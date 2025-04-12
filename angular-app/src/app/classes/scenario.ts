@@ -1,5 +1,5 @@
 class Scenario {
-    id!: string;
+    _id!: string;
     characterId!:string;
     title!: string;
     contextPrompt!: string;

@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { GetAllPersonasService } from '../../services/get-all-personas/get-all-personas.service.spec';
 import { Character } from '../../classes/character';
 import { CommonModule } from '@angular/common';
+import { BackgroundComponent } from '../background/background/background.component';
 
 @Component({
   selector: 'app-start',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent],
   templateUrl: './start.component.html',
   styleUrl: './start.component.css'
 })
