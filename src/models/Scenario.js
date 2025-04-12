@@ -16,8 +16,7 @@ const scenarioSchema = new mongoose.Schema({
         required: true
     },
     contextPrompt: {
-        type: String,
-        required: true
+        type: String
     },
     characterId: {
         type: String,
