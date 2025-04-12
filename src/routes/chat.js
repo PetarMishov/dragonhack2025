@@ -148,4 +148,29 @@ router.get('/chats', async (req, res) => {
         });
     }
 });
+
+router.get('/chat/:_id', async (req, res) => {
+    try {
+        const { _id } = req.params;
+        const chat = await Chat.findById(_id).lean();
+
+        if (!chat) {
+            return res.status(404).json({
+                success: false,
+                message: 'Chat not found'
+            });
+        }
+
+        return res.json({
+            success: true,
+            data: chat
+        });
+    } catch (error) {
+        console.error('Error fetching chat:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch chat'
+        });
+    }
+});
 module.exports = router;
