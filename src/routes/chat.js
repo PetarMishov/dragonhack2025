@@ -9,35 +9,31 @@ const chatSessions = new Map();
 const mongoose = require('mongoose');
 const Scenario = require('../models/Scenario');
 const Character = require('../models/Character');
+const GuessGame = require('../models/GuessGame');
 router.post('/:personaId', async (req, res) => {
     try {
         const { personaId } = req.params;
-        const { message, sessionId } = req.body;
+        const { message } = req.body;
 
         const persona = historicalPersonas.find(p => p.id === personaId);
         if (!persona) {
             return res.status(404).json({ error: 'Historical persona not found' });
         }
 
-        let chat = chatSessions.get(sessionId);
-        if (!chat) {
-            const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
-            chat = model.startChat({
-                history: [{
-                    role: 'user',
-                    parts: `You are ${persona.name}. ${persona.context} Always stay in character.`,
-                }],
-            });
-            chatSessions.set(sessionId, chat);
-        }
+        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
+        const chat = model.startChat({
+            history: [{
+                role: 'user',
+                parts: `You are ${persona.name}. ${persona.context} Always stay in character.`,
+            }],
+        });
 
         const result = await chat.sendMessage(message);
         const response = await result.response;
 
         return res.json({
             message: response.text(),
-            personaId,
-            sessionId
+            personaId
         });
     } catch (error) {
         console.error('Chat error:', error);
@@ -86,6 +82,110 @@ router.get('/character/:_id', async (req, res) => {
             success: false,
             error: 'Failed to fetch character'
         });
+    }
+});
+
+router.post('/guess-game/start', async (req, res) => {
+    try {
+        // Randomly select a character
+        const characters = await Character.find({});
+        const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+
+        const game = new GuessGame({
+            characterId: randomCharacter.id,
+            initialPoints: 100,
+            currentPoints: 100
+        });
+
+        await game.save();
+        res.json({
+            success: true,
+            data: {
+                gameId: game._id,
+                currentPoints: game.currentPoints,
+                status: game.status
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Ask a question in the guessing game
+router.post('/guess-game/:gameId/question', async (req, res) => {
+    try {
+        const { question } = req.body;
+        const game = await GuessGame.findById(req.params.gameId);
+
+        if (!game || game.status !== 'active') {
+            return res.status(404).json({ success: false, error: 'Game not found or completed' });
+        }
+
+        const character = await Character.findOne({ id: game.characterId });
+        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
+
+        // Generate AI response while maintaining character secrecy
+        const promptQuestion = `You are a historical character. Answer this question truthfully but NEVER reveal your specific name: ${question}. Use character's perspective and knowledge from ${character.era}.`;
+        const result = await model.generateContent(promptQuestion);
+        const answer = result.response.text();
+
+        // Deduct points (more for later questions)
+        const pointsDeduction = Math.min(20, 5 + (game.questions.length * 3));
+        game.currentPoints -= pointsDeduction;
+
+        game.questions.push({
+            content: question,
+            answer: answer,
+            pointsDeducted: pointsDeduction
+        });
+
+        if (game.currentPoints <= 0) {
+            game.status = 'lost';
+        }
+
+        await game.save();
+
+        res.json({
+            success: true,
+            data: {
+                answer,
+                currentPoints: game.currentPoints,
+                pointsDeducted: pointsDeduction,
+                status: game.status
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Make a guess
+router.post('/guess-game/:gameId/guess', async (req, res) => {
+    try {
+        const { characterGuess } = req.body;
+        const game = await GuessGame.findById(req.params.gameId);
+
+        if (!game || game.status !== 'active') {
+            return res.status(404).json({ success: false, error: 'Game not found or completed' });
+        }
+
+        const character = await Character.findOne({ id: game.characterId });
+        const isCorrect = character.name.toLowerCase() === characterGuess.toLowerCase();
+
+        game.guessedCorrectly = isCorrect;
+        game.status = isCorrect ? 'won' : 'lost';
+        await game.save();
+
+        res.json({
+            success: true,
+            data: {
+                correct: isCorrect,
+                finalPoints: isCorrect ? game.currentPoints : 0,
+                character: isCorrect ? character : null
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 router.get('/scenarios/character/:_id', async (req, res) => {
