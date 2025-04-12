@@ -84,7 +84,36 @@ router.get('/character/:_id', async (req, res) => {
         });
     }
 });
+router.get('/guess-game/:gameId', async (req, res) => {
+    try {
+        const { gameId } = req.params;
+        const game = await GuessGame.findById(gameId).lean();
 
+        if (!game) {
+            return res.status(404).json({
+                success: false,
+                message: 'Game not found'
+            });
+        }
+
+        return res.json({
+            success: true,
+            data: {
+                gameId: game._id,
+                currentPoints: game.currentPoints,
+                status: game.status,
+                questions: game.questions,
+                guessedCorrectly: game.guessedCorrectly
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching game:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch game'
+        });
+    }
+});
 router.post('/guess-game/start', async (req, res) => {
     try {
         // Randomly select a character
