@@ -4,8 +4,19 @@
     <div class="chat-sidebar" *ngIf="personas">
         <ul class="chat-list">
             <li>
-                <button *ngFor="let persona of personas" class="chat-item" (click)="popupScenarios(persona._id)">{{ persona.name }}</button>
+                <button *ngFor="let persona of personas" class="chat-item"
+                    (click)="popupScenarios(persona)">{{ persona.name
+                    }}</button>
             </li>
         </ul>
     </div>
+
+    <!-- <div class="scenario-sidebar" *ngIf="selected_persona">
+        <ul class="chat-list">
+            <li>
+                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
+                    scenario.title }}</button>
+            </li>
+        </ul>
+    </div> -->
 </body>

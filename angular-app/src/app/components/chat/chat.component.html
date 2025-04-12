@@ -13,6 +13,7 @@
         <ul class="chat-list" >
           <li>
             <button *ngFor="let chat of chats" class="chat-item" (click)="changeChat(chat._id)">{{ chat.title }}</button>
+
           </li>
         </ul>
       </div>
