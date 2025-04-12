@@ -1,2 +1,45 @@
 <router-outlet></router-outlet>
-<p>start works!</p>
+<body>
+    <div class="video-container">
+        <video autoplay muted loop id="bg-video">
+            <source src="/images/background_vid.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="chat-sidebar">
+        <ul class="chat-list">
+          <li class="chat-item">
+            <span>Chat with Newton</span>
+            <!-- <app-card></app-card> -->
+             <!-- <app-card></app-card> -->
+          </li>
+          <li class="chat-item">
+            <span>Chat with Tesla</span>
+            <!-- <app-card></app-card> -->
+            <!-- <app-card></app-card> -->
+          </li>
+          <li class="chat-item">
+            <span>Chat with Cleopatra</span>
+            <!-- <app-card></app-card> -->
+            <!-- <app-card></app-card> -->
+          </li>
+          <li class="chat-item">
+            <span>Chat with Ada Lovelace</span>
+            <!-- <app-card></app-card> -->
+            <!-- <app-card></app-card> -->
+          </li>
+        </ul>
+      </div>
+      
+      <div class="main-content">
+        <!-- Chat content goes here -->
+      </div>
+
+      <div class="chat-input-container">
+        <input
+          type="text"
+          class="chat-input"
+          placeholder="Send a message"
+        />
+      </div>
+  </body>
