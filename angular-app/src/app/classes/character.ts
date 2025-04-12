@@ -1,5 +1,5 @@
 class Character {
-    id!: string;
+    _id!: string;
     name!: string;
     era!: string;
     baseContext!: string;

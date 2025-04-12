@@ -1,16 +1,30 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Chat } from '../../classes/chat';
+import { environment } from '../../../environments/environment';
+import { retry, Observable, throwError, catchError } from 'rxjs';
+import { map } from 'rxjs';
 
-import { GetChatService } from './get-chat.service';
 
-describe('GetChatService', () => {
-  let service: GetChatService;
+@Injectable({
+  providedIn: 'root'
+})
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(GetChatService);
-  });
+export class GetChatService {
+  constructor(private readonly http: HttpClient) {}
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  public getChatById(id : string): Observable<Chat> {
+    const url: string = `${environment.apiUrl}/chat/chat/${id}`;
+    return this.http
+          .get<{ success: boolean; data: Chat }>(url)
+          .pipe(
+            retry(1),
+            map(response => response.data || []), // ✅ Extract `data`
+            catchError(this.handleError)
+          );
+  }
+  
+  private handleError(error: HttpErrorResponse) {
+    return throwError(() => error.error.message || error.statusText);
+  }
+}

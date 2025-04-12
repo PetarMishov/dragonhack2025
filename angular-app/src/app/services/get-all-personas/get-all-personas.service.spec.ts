@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Character } from '../../classes/character';
 import { environment } from '../../../environments/environment';
 import { retry, Observable, throwError, catchError } from 'rxjs';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,14 @@ export class GetAllPersonasService {
   constructor(private readonly http: HttpClient) {}
 
   public getPersonas(): Observable<Character[]> {
-    const url: string = `${environment.apiUrl}/chat/personas`;
+    const url: string = `${environment.apiUrl}/chat/characters`;
     return this.http
-      .get<Character[]>(url)
-      .pipe(retry(1), catchError(this.handleError));
+    .get<{ success: boolean; data: Character[] }>(url)
+    .pipe(
+      retry(1),
+      map(response => response.data || []), // ✅ Extract `data`
+      catchError(this.handleError)
+    );
   }
   
   private handleError(error: HttpErrorResponse) {
