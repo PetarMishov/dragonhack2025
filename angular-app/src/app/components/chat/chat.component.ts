@@ -10,7 +10,7 @@ import { BackgroundComponent } from '../background/background/background.compone
 import { FormsModule } from '@angular/forms';
 import { PostMessageService } from '../../services/post-message/post-message.service.spec';
 import { NewLinePipe } from '../../pipes/new-line.pipe';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -23,7 +23,8 @@ export class ChatComponent {
   constructor(private readonly getAllChatsService : GetAllChatsService,
     private readonly getChatService : GetChatService,
     private readonly getScenariosService : GetScenariosService,
-    private readonly postMessageService : PostMessageService
+    private readonly postMessageService : PostMessageService,
+    private readonly route: ActivatedRoute
   ){}
 
   protected chats? : Chat[];
@@ -32,6 +33,10 @@ export class ChatComponent {
   newMessage: string = '';
 
   ngOnInit(){
+    const chatId = this.route.snapshot.paramMap.get('chatId');
+    if (chatId) {
+      this.changeChat(chatId);
+    }
     this.getChats()
   }
 
@@ -90,10 +95,6 @@ export class ChatComponent {
     };
 
     this.current_chat.messages.push(newMsg);
-    // console.log("trimmed")
-    // console.log(trimmed)
-    // console.log("chat id")
-    // console.log(this.current_chat._id)
 
     this.postMessageService.sendMessage({message: trimmed}, this.current_chat._id).subscribe({
       next: (res) => {

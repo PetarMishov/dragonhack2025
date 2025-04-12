@@ -8,6 +8,7 @@ import { StartNewChatService } from '../../services/start-new-chat/start-new-cha
 import { Scenario } from '../../classes/scenario';
 import { GetScenariosService } from '../../services/get-scenarios/get-scenarios.service.spec';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-start',
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
 export class StartComponent {
   constructor(private readonly getAllPersonasService : GetAllPersonasService,
     private readonly startNewChatService : StartNewChatService,
-    private readonly getScenariosService : GetScenariosService
+    private readonly getScenariosService : GetScenariosService,
+    private readonly router: Router
   ){}
 
   protected personas?: Character[];
@@ -76,7 +78,9 @@ export class StartComponent {
     }
     
     console.log(newChatReq)
-    this.startNewChatService.startNewChat(newChatReq).subscribe((new_chat_id) => {
+    this.startNewChatService.startNewChat(newChatReq).subscribe((res) => {
+      const newChatId = res.data._id; // depends on what your backend returns
+      this.router.navigate(['/chat', newChatId])
     })
   }
 }
