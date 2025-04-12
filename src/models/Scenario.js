@@ -15,10 +15,6 @@ const scenarioSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    alternateHistory: {
-        type: String,
-        required: true
-    },
     contextPrompt: {
         type: String,
         required: true

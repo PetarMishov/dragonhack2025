@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Chat } from '../classes/chat';
-import { environment } from '../../environments/environment';
+import { Character } from '../../classes/character';
+import { environment } from '../../../environments/environment';
 import { retry, Observable, throwError, catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class GetAllChatsService {
+export class GetAllPersonasService {
   constructor(private readonly http: HttpClient) {}
 
-  public getChats(): Observable<Chat[]> {
-    const url: string = `${environment.apiUrl}/chat/get_chats`;
+  public getPersonas(): Observable<Character[]> {
+    const url: string = `${environment.apiUrl}/chat/personas`;
     return this.http
-      .get<Chat[]>(url)
+      .get<Character[]>(url)
       .pipe(retry(1), catchError(this.handleError));
   }
   

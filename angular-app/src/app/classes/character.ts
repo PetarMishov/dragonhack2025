@@ -1,7 +1,8 @@
 class Character {
     id!: string;
     name!: string;
-    init_prompt!: string;
+    era!: string;
+    baseContext!: string;
     scenario_id!: string;
 }
 

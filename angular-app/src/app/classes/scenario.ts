@@ -1,8 +1,9 @@
 class Scenario {
     id!: string;
-    character_id!:string;
+    characterId!:string;
     title!: string;
-    init_prompt!: string;
+    contextPrompt!: string;
+    description!: string;
 }
 
 export { Scenario };

@@ -1,9 +1,10 @@
 class Chat {
     id!: string;
     title!: string;
-    character_id!: string
-    scenario_id!: string
+    characterId!: string
+    scenarioId!: string
     messages!: string[];
+    lastInteraction!: Date;
 }
   
 export { Chat };
