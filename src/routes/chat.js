@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const historicalPersonas = require('../config/personas');
-const Chat = require('../models/chat');
+const Chat = require('../models/Chat');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const chatSessions = new Map();
 const mongoose = require('mongoose');
@@ -183,33 +183,98 @@ router.post('/:chatId/message', async (req, res) => {
         });
     }
 });
+
 router.post('/:personaId', async (req, res) => {
     try {
         const { personaId } = req.params;
-        const { message } = req.body;
+        const { message, chatId } = req.body;
 
-        // Find character in MongoDB instead of historicalPersonas array
+        // Find character in MongoDB
         const character = await Character.findById(personaId);
         if (!character) {
             return res.status(404).json({ success: false, error: 'Historical persona not found' });
         }
 
-        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
-        const chat = model.startChat({
-            history: [{
-                role: 'user',
-                parts: `You are ${character.name}. ${character.baseContext} Always stay in character.`,
-            }],
-        });
+        // Get or create a chat session
+        let chat;
+        if (chatId) {
+            // If chatId is provided, retrieve existing chat
+            chat = await Chat.findById(chatId);
+            if (!chat) {
+                return res.status(404).json({ success: false, error: 'Chat not found' });
+            }
+        } else {
+            // Create a new chat if no chatId provided
+            chat = new Chat({
+                characterId: personaId,
+                title: `Chat with ${character.name}`,
+                messages: []
+            });
+            await chat.save();
+        }
 
-        const result = await chat.sendMessage(message);
+        // If chat history is long enough to need summarization (e.g., more than 10 messages)
+        let contextSummary = '';
+        if (chat.messages.length > 10) {
+            // Create a new Gemini model instance for summarization
+            const summaryModel = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
+            
+            // Prepare history for summarization
+            const historyText = chat.messages
+                .map(msg => `${msg.role.toUpperCase()}: ${msg.content}`)
+                .join('\n');
+            
+            // Request summarization
+            const summaryResult = await summaryModel.generateContent(
+                `Please summarize the following conversation history concisely while preserving key information:
+                 
+                 ${historyText}`
+            );
+            
+            contextSummary = await summaryResult.response.text();
+        }
+
+        // Initialize Gemini chat
+        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
+        
+        // Use the character's baseContext field for the prompt
+        const basePrompt = `You are ${character.name}. ${character.baseContext} Always stay in character.`;
+        const contextPrompt = contextSummary 
+            ? `${basePrompt}\n\nHere's a summary of our conversation so far:\n${contextSummary}`
+            : basePrompt;
+        
+        const aiChat = model.startChat();
+        
+        // Send the initial context
+        await aiChat.sendMessage(contextPrompt);
+
+        // Include the most recent messages for immediate context (limited to last 5)
+        const recentMessages = chat.messages.slice(-5);
+        for (const msg of recentMessages) {
+            await aiChat.sendMessage(msg.content);
+        }
+
+        // Send the latest message and get response
+        const result = await aiChat.sendMessage(message);
         const response = await result.response;
+        const responseText = response.text();
+
+        // Add user message and AI response to chat
+        chat.messages.push(
+            { role: 'user', content: message },
+            { role: 'assistant', content: responseText }
+        );
+        
+        // Update last interaction time
+        chat.lastInteraction = new Date();
+        await chat.save();
 
         return res.json({
             success: true,
             data: {
-                message: response.text(),
-                personaId
+                message: responseText,
+                personaId,
+                chatId: chat._id
             }
         });
     } catch (error) {
