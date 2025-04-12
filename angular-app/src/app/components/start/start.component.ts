@@ -55,7 +55,7 @@ export class StartComponent {
      
   }
 
-  public startNewChat(persona : Character, scenario : Scenario, title : string) {
+  public startNewChat(persona : Character, scenario : Scenario) {
     var p_id = ''
     for (const [key, value] of Object.entries(persona)) {
       if (key == '_id'){
@@ -64,12 +64,17 @@ export class StartComponent {
     }
     var character_id = p_id
     var scenario_id = scenario._id
-    var title_ = 'custom_title'
     var newChatReq = {
       characterId : character_id,
       scenarioId : scenario_id,
-      title : title_
+      title : this.title
     }
+
+    if (!this.title){
+      console.log("Please enter valid title")
+      return
+    }
+    
     console.log(newChatReq)
     this.startNewChatService.startNewChat(newChatReq).subscribe((new_chat_id) => {
     })
