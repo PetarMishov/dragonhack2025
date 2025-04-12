@@ -1,13 +1,14 @@
 // src/models/Chat.js
 const mongoose = require('mongoose');
-
+const {Schema, Types} = mongoose;
 const chatSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
     },
     characterId: {
-        type: String,
+        type: Types.ObjectId,
+        ref: 'Character',
         required: true
     },
     scenarioId: {

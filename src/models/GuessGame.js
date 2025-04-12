@@ -1,9 +1,10 @@
 // src/models/GuessGame.js
 const mongoose = require('mongoose');
-
+const {Schema, Types} = mongoose;
 const guessGameSchema = new mongoose.Schema({
     characterId: {
-        type: String,
+        type: Types.ObjectId,
+        ref: 'Character',
         required: true
     },
     initialPoints: {
