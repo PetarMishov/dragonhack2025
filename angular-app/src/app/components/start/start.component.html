@@ -1,12 +1,10 @@
 <router-outlet></router-outlet>
 <body>
     <app-background></app-background>
-    <div class="scenario-sidebar" *ngIf="personas">
+    <div class="chat-sidebar" *ngIf="personas">
         <ul class="chat-list">
-            <li class="chat-item" *ngFor="let persona of personas">
-                <span>{{ persona.name }}</span>
-                <!-- <app-card></app-card> -->
-                <!-- <app-card></app-card> -->
+            <li>
+                <button *ngFor="let persona of personas" class="chat-item" (click)="startNewChat()">{{ persona.name }}</button>
             </li>
         </ul>
     </div>

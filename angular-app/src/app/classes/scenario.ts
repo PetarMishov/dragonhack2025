@@ -6,4 +6,9 @@ class Scenario {
     description!: string;
 }
 
-export { Scenario };
+class ScenarioList{
+    scenarios! : Scenario[];
+    character! : string;
+}
+
+export { Scenario, ScenarioList };

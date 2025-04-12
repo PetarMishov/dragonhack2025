@@ -4,6 +4,7 @@ import { GetAllPersonasService } from '../../services/get-all-personas/get-all-p
 import { Character } from '../../classes/character';
 import { CommonModule } from '@angular/common';
 import { BackgroundComponent } from '../background/background/background.component';
+import { StartNewChatService } from '../../services/start-new-chat/start-new-chat.service.spec';
 
 @Component({
   selector: 'app-start',
@@ -13,7 +14,8 @@ import { BackgroundComponent } from '../background/background/background.compone
   styleUrl: './start.component.css'
 })
 export class StartComponent {
-  constructor(private readonly getAllPersonasService : GetAllPersonasService
+  constructor(private readonly getAllPersonasService : GetAllPersonasService,
+    private readonly startNewChatService : StartNewChatService
   ){}
 
   protected personas?: Character[];
@@ -27,6 +29,21 @@ export class StartComponent {
     .subscribe((out_personas) => {
       console.log(out_personas)
       this.personas = out_personas
+    })
+  }
+
+  public startNewChat() {
+    var character_id = ''
+    var scenario_id = ''
+    var title_ = ''
+    var newChatReq = {
+      characterId : character_id,
+      scenarioId : scenario_id,
+      title : title_
+    }
+
+    this.startNewChatService.startNewChat(newChatReq).subscribe((new_chat_id) => {
+      console.log("siu")
     })
   }
 }

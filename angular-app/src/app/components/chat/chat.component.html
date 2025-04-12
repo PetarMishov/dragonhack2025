@@ -13,8 +13,6 @@
         <ul class="chat-list" >
           <li>
             <button *ngFor="let chat of chats" class="chat-item" (click)="changeChat(chat._id)">{{ chat.title }}</button>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
           </li>
         </ul>
       </div>
@@ -39,6 +37,8 @@
           type="text"
           class="chat-input"
           placeholder="Send a message"
+          [(ngModel)]="newMessage"
+          (keydown.enter)="sendMessage()"
         />
       </div>
   </body>

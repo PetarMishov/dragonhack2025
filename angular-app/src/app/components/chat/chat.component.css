@@ -97,6 +97,9 @@ body {
   .main-content {
     padding: 30px;
     color: var(--text-primary);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    bottom: 80px;
   }
   
   .chat-input-container {
