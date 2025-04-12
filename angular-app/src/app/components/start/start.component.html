@@ -4,12 +4,8 @@
     <div class="chat-sidebar" *ngIf="personas">
         <ul class="chat-list">
             <li>
-                <button *ngFor="let persona of personas" class="chat-item" (click)="startNewChat()">{{ persona.name }}</button>
+                <button *ngFor="let persona of personas" class="chat-item" (click)="popupScenarios(persona._id)">{{ persona.name }}</button>
             </li>
         </ul>
-    </div>
-
-    <div class="main-content">
-        <!-- Chat content goes here -->
     </div>
 </body>

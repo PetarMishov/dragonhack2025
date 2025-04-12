@@ -19,6 +19,7 @@ export class StartComponent {
   ){}
 
   protected personas?: Character[];
+  protected selected_persona? : Character;
 
   ngOnInit(){
     this.getPersonas()
@@ -30,6 +31,10 @@ export class StartComponent {
       console.log(out_personas)
       this.personas = out_personas
     })
+  }
+
+  public popupScenarios(){
+    
   }
 
   public startNewChat() {
