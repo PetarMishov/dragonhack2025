@@ -54,18 +54,23 @@ export class StartComponent {
      
   }
 
-  // public startNewChat(persona : Character, scenario : Scenario) {
-  //   var character_id = persona._id
-  //   var scenario_id = scenario._id
-  //   var title_ = 'custom_title'
-  //   var newChatReq = {
-  //     characterId : character_id,
-  //     scenarioId : scenario_id,
-  //     title : title_
-  //   }
-
-  //   this.startNewChatService.startNewChat(newChatReq).subscribe((new_chat_id) => {
-  //     console.log("siu")
-  //   })
-  // }
+  public startNewChat(persona : Character, scenario : Scenario) {
+    var p_id = ''
+    for (const [key, value] of Object.entries(persona)) {
+      if (key == '_id'){
+        p_id = value
+      }
+    }
+    var character_id = p_id
+    var scenario_id = scenario._id
+    var title_ = 'custom_title'
+    var newChatReq = {
+      characterId : character_id,
+      scenarioId : scenario_id,
+      title : title_
+    }
+    console.log(newChatReq)
+    this.startNewChatService.startNewChat(newChatReq).subscribe((new_chat_id) => {
+    })
+  }
 }
