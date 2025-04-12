@@ -14,7 +14,7 @@
     <div class="scenario-sidebar" *ngIf="selected_persona">
         <ul class="chat-list">
             <li>
-                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario, title)">{{
+                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
                     scenario.title }}</button>
             </li>
         </ul>
