@@ -90,10 +90,6 @@ export class ChatComponent {
     };
 
     this.current_chat.messages.push(newMsg);
-    // console.log("trimmed")
-    // console.log(trimmed)
-    // console.log("chat id")
-    // console.log(this.current_chat._id)
 
     this.postMessageService.sendMessage({message: trimmed}, this.current_chat._id).subscribe({
       next: (res) => {
