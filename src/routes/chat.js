@@ -45,8 +45,48 @@ router.post('/:personaId', async (req, res) => {
     }
 });
 
-router.get('/personas', (req, res) => {
-    res.json(historicalPersonas);
+// Get all characters (personas)
+router.get('/characters', async (req, res) => {
+    try {
+        const characters = await Character.find().lean();
+
+        return res.json({
+            success: true,
+            data: characters
+        });
+    } catch (error) {
+        console.error('Error fetching characters:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch characters'
+        });
+    }
+});
+
+// Get character by ID
+router.get('/character/:_id', async (req, res) => {
+    try {
+        const { _id } = req.params;
+        const character = await Character.findById(_id).lean();
+
+        if (!character) {
+            return res.status(404).json({
+                success: false,
+                message: 'Character not found'
+            });
+        }
+
+        return res.json({
+            success: true,
+            data: character
+        });
+    } catch (error) {
+        console.error('Error fetching character:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch character'
+        });
+    }
 });
 router.get('/scenarios/character/:_id', async (req, res) => {
     try {
