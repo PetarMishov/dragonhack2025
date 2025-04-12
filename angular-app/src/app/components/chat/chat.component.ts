@@ -12,20 +12,20 @@ import { CommonModule } from '@angular/common';
   styleUrl: './chat.component.css'
 })
 export class ChatComponent {
-  constructor(private readonly getAllPersonasService : GetAllPersonasService
-  ){}
+  // constructor(private readonly getAllPersonasService : GetAllPersonasService
+  // ){}
 
-  protected personas?: Character[];
+  // protected personas?: Character[];
 
-  ngOnInit(){
-    this.getPersonas()
-  }
+  // ngOnInit(){
+  //   this.getPersonas()
+  // }
 
-  private getPersonas() {
-    this.getAllPersonasService.getPersonas()
-    .subscribe((out_personas) => {
-      this.personas = out_personas
-    })
-  }
+  // private getPersonas() {
+  //   this.getAllPersonasService.getPersonas()
+  //   .subscribe((out_personas) => {
+  //     this.personas = out_personas
+  //   })
+  // }
 
 }
