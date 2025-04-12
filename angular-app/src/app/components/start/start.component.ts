@@ -24,6 +24,7 @@ export class StartComponent {
   private getPersonas() {
     this.getAllPersonasService.getPersonas()
     .subscribe((out_personas) => {
+      console.log(out_personas)
       this.personas = out_personas
     })
   }

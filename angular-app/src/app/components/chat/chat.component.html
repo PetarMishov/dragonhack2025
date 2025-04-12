@@ -6,31 +6,6 @@
             Your browser does not support the video tag.
         </video>
     </div>
-    <div class="chat-sidebar">
-        <ul class="chat-list">
-          <li class="chat-item">
-            <span>Chat with Newton</span>
-            <!-- <app-card></app-card> -->
-             <!-- <app-card></app-card> -->
-          </li>
-          <li class="chat-item">
-            <span>Chat with Tesla</span>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
-          </li>
-          <li class="chat-item">
-            <span>Chat with Cleopatra</span>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
-          </li>
-          <li class="chat-item">
-            <span>Chat with Ada Lovelace</span>
-            <!-- <app-card></app-card> -->
-            <!-- <app-card></app-card> -->
-          </li>
-        </ul>
-      </div>
-      
       <div class="scenario-sidebar">
         <ul class="chat-list">
           <li class="chat-item">
@@ -56,15 +31,15 @@
         </ul>
       </div>
 
-      <!-- <div class="scenario-sidebar" *ngIf="personas">
+      <div class="chat-sidebar" *ngIf="chats">
         <ul class="chat-list" >
-          <li class="chat-item" *ngFor="let persona of personas">
-            <span>{{ persona.name }}</span>
-            <app-card></app-card>
-            <app-card></app-card>
+          <li class="chat-item" *ngFor="let chat of chats">
+            <span>{{ chat.title }}</span>
+            <!-- <app-card></app-card> -->
+            <!-- <app-card></app-card> -->
           </li>
         </ul>
-      </div> -->
+      </div>
 
       <div class="main-content">
         <!-- Chat content goes here -->
