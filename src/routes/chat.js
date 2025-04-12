@@ -3,10 +3,12 @@ const express = require('express');
 const router = express.Router();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const historicalPersonas = require('../config/personas');
-
+const Chat = require('../models/chat');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const chatSessions = new Map();
-
+const mongoose = require('mongoose');
+const Scenario = require('../models/Scenario');
+const Character = require('../models/Character');
 router.post('/:personaId', async (req, res) => {
     try {
         const { personaId } = req.params;
@@ -46,5 +48,64 @@ router.post('/:personaId', async (req, res) => {
 router.get('/personas', (req, res) => {
     res.json(historicalPersonas);
 });
+router.get('/scenarios/character/:_id', async (req, res) => {
+    try {
+        const { _id } = req.params;
 
+        // Find character by MongoDB _id
+        const character = await Character.findById(_id);
+        if (!character) {
+            return res.status(404).json({
+                success: false,
+                message: 'Character not found'
+            });
+        }
+
+        // Use character.id to find matching scenarios
+        const scenarios = await Scenario.find({ characterId: character.id }).lean();
+
+        return res.json({
+            success: true,
+            data: {
+                scenarios,
+                character
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching scenarios:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch scenarios'
+        });
+    }
+});
+
+// Get all chat sessions
+router.get('/chats', async (req, res) => {
+    try {
+        // Check if mongoose is connected
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(500).json({
+                success: false,
+                error: 'Database connection not ready'
+            });
+        }
+
+        const chats = await Chat.find()
+            .sort({ lastInteraction: -1 })
+            .select('-__v') // Exclude version field
+            .lean(); // Convert to plain JavaScript objects
+
+        return res.json({
+            success: true,
+            data: chats || [] // Return empty array if no chats
+        });
+    } catch (error) {
+        console.error('Error fetching chats:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to fetch chats'
+        });
+    }
+});
 module.exports = router;
