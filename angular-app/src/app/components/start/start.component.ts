@@ -7,11 +7,12 @@ import { BackgroundComponent } from '../background/background/background.compone
 import { StartNewChatService } from '../../services/start-new-chat/start-new-chat.service.spec';
 import { Scenario } from '../../classes/scenario';
 import { GetScenariosService } from '../../services/get-scenarios/get-scenarios.service.spec';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-start',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, BackgroundComponent],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent, FormsModule],
   templateUrl: './start.component.html',
   styleUrl: './start.component.css'
 })
@@ -24,7 +25,7 @@ export class StartComponent {
   protected personas?: Character[];
   protected selected_persona? : Character;
   protected persona_scenarios? : Scenario[];
-
+  title: string = '';
   ngOnInit(){
     this.getPersonas()
   }
@@ -54,7 +55,7 @@ export class StartComponent {
      
   }
 
-  public startNewChat(persona : Character, scenario : Scenario) {
+  public startNewChat(persona : Character, scenario : Scenario, title : string) {
     var p_id = ''
     for (const [key, value] of Object.entries(persona)) {
       if (key == '_id'){
