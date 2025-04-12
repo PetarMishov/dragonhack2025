@@ -62,3 +62,4 @@ logs/
 
 # Ignore cache created with the Angular CLI.
 .angular/
+angular_app/package-lock.json
