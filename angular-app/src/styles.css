@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+
+  :root {
+    --accent: #A78BFA;           /* Nebula violet */
+    --accent-soft: #C4B5FD;      /* Soft lavender for glow */
+    --highlight: #FACC15;        /* Star yellow */
+    --background-glass: rgba(255, 255, 255, 0.06);
+    --text-primary: #E5E7EB;     /* Soft white */
+    --text-muted: #9CA3AF;       /* Gray */
+    --border-glow: rgba(167, 139, 250, 0.3);
+  }
