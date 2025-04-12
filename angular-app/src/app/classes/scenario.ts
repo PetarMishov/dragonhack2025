@@ -1,9 +1,14 @@
 class Scenario {
-    id!: string;
+    _id!: string;
     characterId!:string;
     title!: string;
     contextPrompt!: string;
     description!: string;
 }
 
-export { Scenario };
+class ScenarioList{
+    scenarios! : Scenario[];
+    character! : string;
+}
+
+export { Scenario, ScenarioList };

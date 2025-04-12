@@ -1,22 +1,22 @@
 <router-outlet></router-outlet>
 <body>
-    <div class="video-container">
-        <video autoplay muted loop id="bg-video">
-            <source src="/images/background_vid.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    <div class="scenario-sidebar" *ngIf="personas">
+    <app-background></app-background>
+    <div class="chat-sidebar" *ngIf="personas">
         <ul class="chat-list">
-            <li class="chat-item" *ngFor="let persona of personas">
-                <span>{{ persona.name }}</span>
-                <!-- <app-card></app-card> -->
-                <!-- <app-card></app-card> -->
+            <li>
+                <button *ngFor="let persona of personas" class="chat-item"
+                    (click)="popupScenarios(persona)">{{ persona.name
+                    }}</button>
             </li>
         </ul>
     </div>
 
-    <div class="main-content">
-        <!-- Chat content goes here -->
-    </div>
+    <!-- <div class="scenario-sidebar" *ngIf="selected_persona">
+        <ul class="chat-list">
+            <li>
+                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
+                    scenario.title }}</button>
+            </li>
+        </ul>
+    </div> -->
 </body>
