@@ -3,46 +3,50 @@
     
     <div class="main-container">
       <!-- Left sidebar for chat -->
-      <div class="chat-sidebar" *ngIf="personas">
-        <ul class="chat-list">
-          <li *ngFor="let persona of personas">
-            <button 
-              class="chat-item"
-              (click)="popupScenarios(persona)">
-              {{ persona.name }}
-            </button>
-          </li>
-        </ul>
-    </div>
-
-    <div class="scenario-sidebar" *ngIf="selected_persona">
-        <ul class="chat-list">
-            <li>
-                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
-                    scenario.title }}</button>
-            </li>
-        </ul>
-    </div>
-
-    <div class="chat-input-container">
-        <input
-          type="text"
-          class="chat-input"
-          placeholder="Conversation title"
-          [(ngModel)]="title"
-        />
-      </div>
-      <!-- Main content area with card grid -->
-      <div class="content-area">
-        <div class="card-grid" *ngIf="personas">
-          <div *ngFor="let persona of personas" class="card-wrapper">
-            <app-card
-              [name]="persona.name"
-              [era]="persona.era"
-              [baseContext]="persona.baseContext">
-            </app-card>
-          </div>
+        <div class="chat-sidebar" *ngIf="personas"> 
+            <ul class="chat-list">
+                <li style="margin-bottom: 5%;">
+                    <h2 class="chat-title">New Chat Title:</h2>
+                    <input
+                    type="text"
+                    class="chat-input"
+                    placeholder="Conversation title"
+                    [(ngModel)]="title"
+                    />
+                </li>
+                <li>
+                    <div class="scenario-sidebar" *ngIf="selected_persona">
+                        <h2 class="chat-title">Chat Type:</h2>
+                        <ul class="chat-list-purple">
+                            <li>
+                                <button *ngFor="let scenario of persona_scenarios" class="chat-item-purple" (click)="startNewChat(selected_persona, scenario)">{{
+                                    scenario.title }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <h2 class="chat-title">Chat History:</h2>
+                <li *ngFor="let persona of personas">
+                    <button 
+                    class="chat-item"
+                    (click)="popupScenarios(persona)">
+                    {{ persona.name }}
+                    </button>
+                </li>
+            </ul>
         </div>
-      </div>
+
+      <!-- Main content area with card grid -->
+        <div class="content-area">
+            <div class="card-grid" *ngIf="personas">
+            <div *ngFor="let persona of personas" class="card-wrapper">
+                <app-card
+                [name]="persona.name"
+                [era]="persona.era"
+                [baseContext]="persona.baseContext">
+                </app-card>
+            </div>
+            </div>
+        </div>
     </div>
   </body>
