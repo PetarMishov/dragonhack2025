@@ -76,6 +76,10 @@ export class StartComponent {
     this.router.navigate(['/chat', chatId]);
   }
 
+  playGame(): void {
+    this.router.navigate(['/guess-game']);
+  }
+
   public startNewChat(persona: Character, scenario: Scenario) {
     var p_id = '';
     for (const [key, value] of Object.entries(persona)) {

@@ -17,7 +17,7 @@ body {
 
 /* Chat Sidebar Styling */
 .chat-sidebar {
-  width: 25%;
+  width: 20%;
   height: 100vh;
   padding: 20px;
   box-sizing: border-box;
@@ -160,4 +160,25 @@ app-card {
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
+}
+
+.buttonGame{
+  background-color: #a1a1a1;
+  color: black;
+  cursor: pointer;
+  
+  text-align: center; 
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 90%;
+  height: 50px;
+  border-radius: 12px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+.buttonGame:hover{
+  background-color: purple;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
