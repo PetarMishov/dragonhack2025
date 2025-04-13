@@ -21,4 +21,22 @@
           (keydown.enter)="sendMessage()"
         />
       </div>
+
+
+      <div class="character-sidebar" *ngIf="allCharacters?.length">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search characters..."
+          [(ngModel)]="searchText"
+        />
+      
+        <ul class="chat-list">
+          <li *ngFor="let persona of filteredCharacters()">
+            <button class="chat-item" (click)="makeGuess(persona)">
+              {{ persona.name }}
+            </button>
+          </li>
+        </ul>
+      </div>
 </body>

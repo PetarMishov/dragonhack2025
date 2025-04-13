@@ -464,7 +464,7 @@ router.post('/guess-game/:gameId/guess', async (req, res) => {
             data: {
                 correct: isCorrect,
                 finalPoints: isCorrect ? game.currentPoints : 0,
-                character: isCorrect ? character : null
+                character: character
             }
         });
     } catch (error) {

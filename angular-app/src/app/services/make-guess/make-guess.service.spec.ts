@@ -1,16 +1,19 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { GuessResponse } from '../../classes/game';
 
-import { MakeGuessService } from './make-guess.service';
+@Injectable({
+  providedIn: 'root'
+})
 
-describe('MakeGuessService', () => {
-  let service: MakeGuessService;
+export class MakeGuessService {
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(MakeGuessService);
-  });
+  constructor(private readonly http: HttpClient) {}
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  public askQuestion(id : string, character_guess : string): Observable<GuessResponse> {
+    const url: string = `${environment.apiUrl}/chat/guess-game/${id}/guess`;
+    return this.http.post<GuessResponse>(url, {characterGuess: character_guess});
+  }
+}

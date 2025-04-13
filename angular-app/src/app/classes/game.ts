@@ -1,3 +1,5 @@
+import { Character } from "./character";
+
 class Game {
 }
 
@@ -34,4 +36,15 @@ class QuestionResponse{
     data! : QuestionResponseData;
 }
 
-export { Game, GameResponse, GameResponseData, Question, QuestionResponse };
+class GuessResponseData{
+    correct!: boolean;
+    finalPoints!: number;
+    character!: Character;
+}
+
+class GuessResponse{
+    success!: boolean;
+    data!: GuessResponseData;
+}
+
+export { Game, GameResponse, GameResponseData, Question, QuestionResponse, GuessResponse };
