@@ -22,15 +22,13 @@ This application combines educational value with entertainment by enabling users
 
 ### Historical Guessing Game
 - Strategic gameplay starting at 100 points
-- Progressive point deduction system
 - Character-specific scenarios
-- Real-time question-answer mechanism
 - Win condition: Correctly identify the historical figure
 
 ## Technical Architecture
 
 ### Frontend Technology
-- Angular 17+
+- Angular 18
 - TypeScript 5.x
 - Glass-morphism UI design
 - CSS custom properties
@@ -40,7 +38,6 @@ This application combines educational value with entertainment by enabling users
 - Node.js/Express.js REST API
 - MongoDB with Mongoose ODM
 - Google Gemini AI integration
-- JWT authentication
 ## Educational Value
 
 ### Historical Learning Experience
@@ -74,13 +71,12 @@ This application combines educational value with entertainment by enabling users
 
 ```bash
 # Clone repository
-git clone [repository-url]
+git clone [[repository-url]](https://github.com/PetarMishov/dragonhack2025.git)
 cd historical-figures-interactive
 
 # Install backend dependencies
-cd backend
 npm install
 
 # Install frontend dependencies
-cd ../angular-app
+cd angular-app
 npm install
