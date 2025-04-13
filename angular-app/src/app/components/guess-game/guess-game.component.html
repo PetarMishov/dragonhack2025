@@ -22,6 +22,25 @@
         />
       </div>
 
+      <div class="result-message" *ngIf="gameOver">
+        <div *ngIf="isCorrect" 
+       class="success-message" 
+       [class.clickable]="clickToNavigate"
+       (click)="clickToNavigate && onBackgroundClick()">
+          <h2>Congratulations! 🎉</h2>
+          <p>You correctly guessed {{correctAnswer}}!</p>
+          <p>Points earned: {{current_points}}</p>
+        </div>
+        <div *ngIf="!isCorrect"
+       class="failure-message"
+        [class.clickable]="clickToNavigate"
+        (click)="clickToNavigate && onBackgroundClick()">
+          <!-- <h2>Game Over! 😢</h2> -->
+          <p>The correct answer was {{correctAnswer}}.</p>
+          <p>Points earned: {{current_points}}</p>
+        </div>
+      </div>
+
 
       <div class="character-sidebar" *ngIf="allCharacters?.length">
         <input
