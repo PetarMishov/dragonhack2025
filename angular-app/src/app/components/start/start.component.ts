@@ -10,78 +10,96 @@ import { GetScenariosService } from '../../services/get-scenarios/get-scenarios.
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppCardComponent } from '../app-card/app-card.component';
+import { ChatComponent } from '../chat/chat.component';
+import { GetAllChatsService } from '../../services/get-all-chats/get-all-chats.service.spec';
+import { Chat } from '../../classes/chat';
 
 @Component({
   selector: 'app-start',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, BackgroundComponent, AppCardComponent, FormsModule],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent, AppCardComponent, FormsModule, ChatComponent],
   templateUrl: './start.component.html',
   styleUrl: './start.component.css'
 })
 export class StartComponent {
-  constructor(private readonly getAllPersonasService : GetAllPersonasService,
-    private readonly startNewChatService : StartNewChatService,
-    private readonly getScenariosService : GetScenariosService,
+  constructor(private readonly getAllPersonasService: GetAllPersonasService,
+    private readonly startNewChatService: StartNewChatService,
+    private readonly getScenariosService: GetScenariosService,
+    private readonly getAllChatsService: GetAllChatsService,
     private readonly router: Router
   ){}
 
   protected personas?: Character[];
-  protected selected_persona? : Character;
-  protected persona_scenarios? : Scenario[];
+  protected selected_persona?: Character;
+  protected persona_scenarios?: Scenario[];
+  protected chats?: Chat[];
   title: string = '';
+  
   ngOnInit(){
-    this.getPersonas()
+    this.getPersonas();
+    this.getChats();
   }
 
   private getPersonas() {
     this.getAllPersonasService.getPersonas()
     .subscribe((out_personas) => {
-      console.log(out_personas)
-      this.personas = out_personas
-    })
+      console.log(out_personas);
+      this.personas = out_personas;
+    });
+  }
+
+  private getChats() {
+    this.getAllChatsService.getChats()
+    .subscribe((out_chats) => {
+      console.log(out_chats);
+      this.chats = out_chats;
+    });
   }
 
   public popupScenarios(persona: Character){
-    this.selected_persona = persona
-    var p_id = ''
+    this.selected_persona = persona;
+    var p_id = '';
     for (const [key, value] of Object.entries(persona)) {
       if (key == '_id'){
-        p_id = value
+        p_id = value;
       }
     }
-    console.log(p_id)
+    console.log(p_id);
     this.getScenariosService.getScenariosById(p_id)
     .subscribe((out_scenarios) => {
-      console.log(out_scenarios)
-      this.persona_scenarios = out_scenarios.scenarios
-    })
-     
+      console.log(out_scenarios);
+      this.persona_scenarios = out_scenarios.scenarios;
+    });
   }
 
-  public startNewChat(persona : Character, scenario : Scenario) {
-    var p_id = ''
+  public navigateToChat(chatId: string) {
+    this.router.navigate(['/chat', chatId]);
+  }
+
+  public startNewChat(persona: Character, scenario: Scenario) {
+    var p_id = '';
     for (const [key, value] of Object.entries(persona)) {
       if (key == '_id'){
-        p_id = value
+        p_id = value;
       }
     }
-    var character_id = p_id
-    var scenario_id = scenario._id
+    var character_id = p_id;
+    var scenario_id = scenario._id;
     var newChatReq = {
-      characterId : character_id,
-      scenarioId : scenario_id,
-      title : this.title
-    }
+      characterId: character_id,
+      scenarioId: scenario_id,
+      title: this.title
+    };
 
     if (!this.title){
-      console.log("Please enter valid title")
-      return
+      console.log("Please enter valid title");
+      return;
     }
     
-    console.log(newChatReq)
+    console.log(newChatReq);
     this.startNewChatService.startNewChat(newChatReq).subscribe((res) => {
       const newChatId = res.data._id; // depends on what your backend returns
-      this.router.navigate(['/chat', newChatId])
-    })
+      this.router.navigate(['/chat', newChatId]);
+    });
   }
 }

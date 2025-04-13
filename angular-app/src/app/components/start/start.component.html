@@ -1,3 +1,4 @@
+<router-outlet></router-outlet>
 <body>
     <app-background></app-background>
     
@@ -26,10 +27,11 @@
                     </div>
                 </li>
                 <h2 class="chat-title">Chat History:</h2>
-                <li *ngFor="let persona of personas">
+                <li *ngFor="let chat of chats">
                     <button 
-                    class="chat-item">
-                    {{ persona.name }}
+                    class="chat-item"
+                    (click)="navigateToChat(chat._id)">
+                    {{ chat.title }}
                     </button>
                 </li>
             </ul>
