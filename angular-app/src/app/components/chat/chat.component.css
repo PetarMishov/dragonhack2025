@@ -183,7 +183,7 @@ body {
     border-radius: 8px;
     background: rgba(167, 139, 250, 0.08); /* 🌌 base violet tone */
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s, color 0.2s;
+    transition: 0.2s, transform 0.2s, color 0.2s;
     color: var(--text-primary);
     backdrop-filter: blur(8px);
   }

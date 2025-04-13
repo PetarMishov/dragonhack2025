@@ -48,7 +48,7 @@ body {
   padding: 10px 15px;
   margin-bottom: 10px;
   border-radius: 8px;
-  background: rgba(167, 139, 250, 0.08);
+  background:  #1F2937;
   cursor: pointer;
   transition: 0.2s, transform 0.2s, color 0.2s;
   color: var(--text-primary);
@@ -57,9 +57,9 @@ body {
 }
 
 .chat-item:hover {
-  background: rgba(167, 139, 250, 0.15);
+  background: rgb(35, 58, 87);
   transform: translateX(6px);
-  color: var(--accent);
+  color: white;
 }
 
 .chat-item-purple {
@@ -94,6 +94,23 @@ body {
   text-overflow: ellipsis;
 }
 
+.content-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-area::-webkit-scrollbar-track {
+  background: #1F2937 ;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 4px;
+}
+
+.content-area::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
 app-card {
   flex-shrink: 0;
 }
@@ -109,7 +126,7 @@ app-card {
   transition: all 0.3s ease;
   outline: none;
   pointer-events: auto;
-  box-shadow: 0 0 20px rgba(167, 139, 250, 0.1);
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0. 1);
 }
 
 .chat-input:focus {
@@ -166,15 +183,14 @@ app-card {
   background-color: #a1a1a1;
   color: black;
   cursor: pointer;
-  
   text-align: center; 
   align-items: center;
   justify-content: center;
   color: white;
-  width: 90%;
+  width: 98%;
   height: 50px;
   border-radius: 12px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Special Gothic Expanded One", sans-serif;
 }
 .buttonGame:hover{
   background-color: purple;
