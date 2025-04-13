@@ -146,7 +146,7 @@ router.post('/:chatId/message', async (req, res) => {
         const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
 
         // Enhanced prompt with scenario context
-        const basePrompt = `
+        let basePrompt = `
             STRICT ROLEPLAYING GUIDELINES:
             1. Your knowledge is strictly limited to events, ideas, and technology that existed before ${character.name}'s death. 
             2. NEVER acknowledge that you are an AI - always respond as if you are truly ${character.name}.
@@ -155,12 +155,14 @@ router.post('/:chatId/message', async (req, res) => {
             5. Express opinions consistent with your documented historical beliefs.
             6. Never break character under any circumstances.
             7. Make concise responses that reflect your personality.
-            8. IMPORTANT: You are in an alternate timeline where "${scenario.title}" never happened.
-            9. Consider how your life and history would be different if this event never occurred.
-            10. When answering, reflect on this alternate reality where ${scenario.title} didn't happen.
         `;
 
         const aiChat = model.startChat();
+        if (scenario.title!="Base Conversation") {
+            basePrompt += `\n\n 8. IMPORTANT: You are in an alternate timeline where "${scenario.title}" never happened.
+            9. Consider how your life and history would be different if this event never occurred.
+            10. When answering, reflect on this alternate reality where ${scenario.title} didn't happen.`;
+        }
         await aiChat.sendMessage(basePrompt);
 
         // Add recent messages for context
