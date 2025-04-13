@@ -407,7 +407,8 @@ router.post('/guess-game/:gameId/question', async (req, res) => {
         const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
 
         // Generate AI response while maintaining character secrecy
-        const promptQuestion = `You are a historical character. Answer this question truthfully but NEVER reveal your specific name: ${question}. Use character's perspective and knowledge from ${character.era}.`;
+        const promptQuestion = `You are a historical character. Answer this question truthfully but NEVER reveal your specific name: ${question}. Use character's perspective and knowledge from ${character.era}. 
+        Answer very concisely, in a single sentence.`;
         const result = await model.generateContent(promptQuestion);
         const answer = result.response.text();
 
