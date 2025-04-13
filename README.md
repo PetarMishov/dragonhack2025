@@ -1,5 +1,5 @@
 
-# Historical Figures Interactive
+# Echoes of Geniuses
 
 An immersive web platform allowing users to engage with historical personalities through AI-powered conversations and an interactive guessing game.
 
@@ -38,6 +38,7 @@ This application combines educational value with entertainment by enabling users
 - Node.js/Express.js REST API
 - MongoDB with Mongoose ODM
 - Google Gemini AI integration
+   - Our **AI Agent** is made of two use cases of Gemini API: the first one is aobut sending a message to the model, and the other is about sumarizing the chat history so it is put like a context to the new prompt.
 ## Educational Value
 
 ### Historical Learning Experience
@@ -66,17 +67,3 @@ This application combines educational value with entertainment by enabling users
 - Museum and cultural institutions
 - General knowledge seekers
 - Interactive learning platforms
-
-## Installation
-
-```bash
-# Clone repository
-git clone [[repository-url]](https://github.com/PetarMishov/dragonhack2025.git)
-cd historical-figures-interactive
-
-# Install backend dependencies
-npm install
-
-# Install frontend dependencies
-cd angular-app
-npm install
