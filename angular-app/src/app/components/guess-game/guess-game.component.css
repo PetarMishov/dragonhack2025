@@ -65,15 +65,22 @@ body {
     padding: 10px 15px;
     margin-bottom: 10px;
     border-radius: 8px;
-    background: rgba(167, 139, 250, 0.08); /* 🌌 base violet tone */
+    background: #1F2937; /* 🌌 base violet tone */
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s, color 0.2s;
+    transition:  0.2s, transform 0.2s, color 0.2s;
     color: var(--text-primary);
     backdrop-filter: blur(8px);
   }
+
   
   .chat-item:hover {
-    background: rgba(167, 139, 250, 0.15); /* brighter on hover */
+    background: red;
+    transform: translateX(6px);
+    color: white;
+  }
+  
+  .chat-item:hover {
+    background:red; /* brighter on hover */
     transform: translateX(6px);
     color: var(--accent);
   }
@@ -185,17 +192,17 @@ body {
     padding: 10px 15px;
     margin-bottom: 10px;
     border-radius: 8px;
-    background: rgba(167, 139, 250, 0.08); /* 🌌 base violet tone */
+    background: #1F2937; /* 🌌 base violet tone */
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s, color 0.2s;
+    transition:  0.2s, transform 0.2s, color 0.2s;
     color: var(--text-primary);
     backdrop-filter: blur(8px);
   }
   
   button.chat-item:hover {
-    background: rgba(167, 139, 250, 0.15); /* brighter on hover */
+    background: rgb(35, 58, 87); /* brighter on hover */
     transform: translateX(6px);
-    color: var(--accent);
+    color: white;
   }
   
   button.chat-item.active {
@@ -365,4 +372,27 @@ body {
   @keyframes scaleIn {
     from { transform: scale(0.5); }
     to { transform: scale(1); }
+  }
+
+  .sidebar-content {
+    height: 100%;
+    overflow-y: auto; /* Adds vertical scrollbar when content overflows */
+    padding: 16px;
+  }
+  
+  .sidebar-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .sidebar-content::-webkit-scrollbar-track {
+    background: #1F2937 ;
+  }
+  
+  .sidebar-content::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 4px;
+  }
+  
+  .sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
   }
