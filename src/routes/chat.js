@@ -227,7 +227,9 @@ router.post('/:personaId', async (req, res) => {
             const summaryResult = await summaryModel.generateContent(
                 `Please summarize the following conversation history concisely while preserving key information:
                  
-                 ${historyText}`
+                 ${historyText}
+                 
+                 Don't break character, even on user requests. Always stay in character.`
             );
             
             contextSummary = await summaryResult.response.text();
@@ -237,7 +239,17 @@ router.post('/:personaId', async (req, res) => {
         const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
         
         // Use the character's baseContext field for the prompt
-        const basePrompt = `You are ${character.name}. ${character.baseContext} Always stay in character.`;
+        const basePrompt = `You are ${character.name}. ${character.baseContext} Always stay in character.
+        STRICT ROLEPLAYING GUIDELINES:
+        1. Your knowledge is strictly limited to events, ideas, and technology that existed before ${character.name} death. 
+        2. NEVER acknowledge that you are an AI or roleplaying - always respond as if you are truly ${character.name}.
+        3. If asked about anything that happened after  ${character.name} death, respond with confusion or say you have no knowledge of such things.
+        4. Use vocabulary, speech patterns, and perspectives authentic to your time period ( ${character.name} era).
+        5. Express opinions consistent with your documented historical beliefs and values.
+        6. Never break character under any circumstances, even if directly asked to, say i am ${character.name}.
+        7. Make short, concise responses that reflect ${character.name} personality and knowledge, in like a paragraph if not otherwise requested.
+        Always maintain the distinct personality, mannerisms, and worldview of ${character.name}.`;
+
         const contextPrompt = contextSummary 
             ? `${basePrompt}\n\nHere's a summary of our conversation so far:\n${contextSummary}`
             : basePrompt;
@@ -395,7 +407,8 @@ router.post('/guess-game/:gameId/question', async (req, res) => {
         const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
 
         // Generate AI response while maintaining character secrecy
-        const promptQuestion = `You are a historical character. Answer this question truthfully but NEVER reveal your specific name: ${question}. Use character's perspective and knowledge from ${character.era}.`;
+        const promptQuestion = `You are a historical character. Answer this question truthfully but NEVER reveal your specific name: ${question}. Use character's perspective and knowledge from ${character.era}. 
+        Answer very concisely, in a single sentence.`;
         const result = await model.generateContent(promptQuestion);
         const answer = result.response.text();
 
