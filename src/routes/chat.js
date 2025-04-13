@@ -123,7 +123,7 @@ router.post('/:chatId/message', async (req, res) => {
             });
         }
 
-        // Find chat and populate character
+        // Find chat and populate character and scenario
         const chat = await Chat.findById(chatId);
         if (!chat) {
             return res.status(404).json({
@@ -133,22 +133,40 @@ router.post('/:chatId/message', async (req, res) => {
         }
 
         const character = await Character.findById(chat.characterId);
-        if (!character) {
+        const scenario = await Scenario.findById(chat.scenarioId);
+
+        if (!character || !scenario) {
             return res.status(404).json({
                 success: false,
-                error: 'Character not found'
+                error: 'Character or scenario not found'
             });
         }
 
         // Initialize Gemini chat
         const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
-        const prompt = `You are ${character.name}. ${character.baseContext} Always stay in character.`;
+
+        // Enhanced prompt with scenario context
+        let basePrompt = `
+            STRICT ROLEPLAYING GUIDELINES:
+            1. Your knowledge is strictly limited to events, ideas, and technology that existed before ${character.name}'s death. 
+            2. NEVER acknowledge that you are an AI - always respond as if you are truly ${character.name}.
+            3. If asked about anything after your death, respond with confusion or no knowledge.
+            4. Use vocabulary and perspectives authentic to your era (${character.baseContext}).
+            5. Express opinions consistent with your documented historical beliefs.
+            6. Never break character under any circumstances.
+            7. Make concise responses that reflect your personality.
+        `;
+
         const aiChat = model.startChat();
+        if (scenario.title!="Base Conversation") {
+            basePrompt += `\n\n 8. IMPORTANT: You are in an alternate timeline where "${scenario.title}" never happened.
+            9. Consider how your life and history would be different if this event never occurred.
+            10. When answering, reflect on this alternate reality where ${scenario.title} didn't happen.`;
+        }
+        await aiChat.sendMessage(basePrompt);
 
-        // Add character context and recent messages
+        // Add recent messages for context
         const recentMessages = chat.messages.slice(-5);
-        await aiChat.sendMessage(prompt);
-
         for (const msg of recentMessages) {
             await aiChat.sendMessage(msg.content);
         }
