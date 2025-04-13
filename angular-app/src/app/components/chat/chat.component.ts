@@ -11,11 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { PostMessageService } from '../../services/post-message/post-message.service.spec';
 import { NewLinePipe } from '../../pipes/new-line.pipe';
 import { ActivatedRoute } from '@angular/router';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, BackgroundComponent, FormsModule, NewLinePipe],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent, FormsModule, NewLinePipe, RouterLink],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })

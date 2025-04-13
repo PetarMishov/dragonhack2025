@@ -12,11 +12,17 @@ import { Character } from '../../classes/character';
 import { MakeGuessService } from '../../services/make-guess/make-guess.service.spec';
 import { GetAllPersonasService } from '../../services/get-all-personas/get-all-personas.service.spec';
 import confetti from 'canvas-confetti';
+import { AppCardComponent } from '../app-card/app-card.component';
+import { Chat } from '../../classes/chat';
+import { GetAllChatsService } from '../../services/get-all-chats/get-all-chats.service.spec';
+import { RouterLink } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-guess-game',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet, BackgroundComponent],
+  imports: [CommonModule, FormsModule, RouterOutlet, BackgroundComponent, AppCardComponent, RouterLink],
   templateUrl: './guess-game.component.html',
   styleUrl: './guess-game.component.css'
 })
@@ -26,7 +32,9 @@ export class GuessGameComponent {
     private readonly askQuestionService: AskQuestionService,
     private readonly makeGuessService: MakeGuessService,
     private readonly getAllPersonasService: GetAllPersonasService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly getAllChatsService : GetAllChatsService,
+    @Inject(DOCUMENT) private document: Document
   ){}
 
   newMessage: string = '';
@@ -39,6 +47,8 @@ export class GuessGameComponent {
   correctAnswer: string = '';
   isCorrect: boolean = false;
   clickToNavigate: boolean = false; // Flag to enable click-to-navigate
+  protected chats?: Chat[];
+  
 
 
   ngOnInit(){
@@ -47,6 +57,15 @@ export class GuessGameComponent {
       this.current_points = out_game_reponse.data.currentPoints;
     });
     this.getPersonas();
+    this.getChats();
+  }
+
+  private getChats() {
+    this.getAllChatsService.getChats()
+    .subscribe((out_chats) => {
+      console.log(out_chats);
+      this.chats = out_chats;
+    });
   }
 
   public getPersonas() {
@@ -100,8 +119,9 @@ export class GuessGameComponent {
   }
 
   onBackgroundClick(): void {
+    
     if (this.clickToNavigate) {
-      this.router.navigate(['/start']);
+      this.router.navigate(['/']);
     }
   }
 
@@ -179,14 +199,22 @@ export class GuessGameComponent {
     document.body.appendChild(overlay);
     
     // Remove after 2 seconds
-    // setTimeout(() => {
-    //   document.body.removeChild(overlay);
-    // }, 2000);
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+    }, 2000);
   }
 
   filteredCharacters(): Character[] {
     return this.allCharacters.filter(persona =>
       persona.name.toLowerCase().includes(this.searchText.toLowerCase())
     );
+  }
+
+  public navigateToChat(chatId: string) {
+    this.router.navigate(['/chat', chatId]);
+  }
+
+  public refresh(){
+    this.document.defaultView?.location.reload();
   }
 }

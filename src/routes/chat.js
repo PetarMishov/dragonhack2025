@@ -471,6 +471,7 @@ router.post('/guess-game/:gameId/guess', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
 router.get('/scenarios/character/:_id', async (req, res) => {
     try {
         const { _id } = req.params;
