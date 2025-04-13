@@ -1,0 +1,26 @@
+<mat-card class="example-card" appearance="outlined" (mouseenter)="onCardFocus(true)" (mouseleave)="onCardFocus(false)">
+  <!-- Video as main background -->
+  <div class="video-container">
+    <video 
+      #videoElement
+      [src]="videoPath"
+      [muted]="true"
+      [loop]="true"
+      playsinline>
+    </video>
+  </div>
+  
+  <!-- Header visible by default (name and era) -->
+  <mat-card-header class="card-header">
+    <mat-card-title>{{ name }}</mat-card-title>
+    <mat-card-subtitle>{{ era }}</mat-card-subtitle>
+  </mat-card-header>
+  
+  <!-- Content appears on hover -->
+  <mat-card-content>
+    <p>{{ baseContext }}</p>
+    <div class="button-container">
+      <button mat-button>SELECT</button>
+    </div>
+  </mat-card-content>
+</mat-card>

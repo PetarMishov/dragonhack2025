@@ -1,0 +1,129 @@
+.example-card {
+  position: relative;
+  height: 350px; /* Increased height to fit more content */
+  width: 100%;
+  background-color: rgba(18, 18, 18, 0.9);
+  color: #fff;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  
+  /* 3D floating effect */
+  box-shadow: 
+    0 10px 20px rgba(0, 0, 0, 0.4),
+    0 6px 6px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.example-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.5),
+    0 10px 10px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.card-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 16px;
+}
+
+.example-card:hover .card-header {
+  opacity: 1;
+}
+
+.card-header mat-card-title,
+.card-header mat-card-subtitle {
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+}
+
+mat-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.85);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0 0 8px 8px;
+  backdrop-filter: blur(4px);
+  padding: 16px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  max-height: 75%; /* Limit height but allow text to display */
+  overflow-y: auto; /* Add scroll if absolutely necessary */
+}
+
+mat-card-content p {
+  margin-bottom: 16px;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  white-space: normal; /* Ensure text wraps */
+  word-wrap: break-word; /* Break long words if needed */
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: 100%; /* Ensure the paragraph takes full width */
+}
+
+.example-card:hover mat-card-content {
+  opacity: 1;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  margin-top: auto; /* Push buttons to bottom */
+}
+
+mat-card-content button {
+  margin-left: 10px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 4px 12px;
+}
+
+mat-card-content button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
