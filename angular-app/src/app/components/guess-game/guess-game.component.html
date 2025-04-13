@@ -16,7 +16,7 @@
         <input
           type="text"
           class="chat-input"
-          placeholder="Send a message"
+          placeholder="Ask a question!"
           [(ngModel)]="newMessage"
           (keydown.enter)="sendMessage()"
         />
@@ -43,19 +43,56 @@
 
 
       <div class="character-sidebar" *ngIf="allCharacters?.length">
+        <h2>Guess who?</h2>
         <input
           type="text"
-          class="search-input"
+          class="chat-input"
           placeholder="Search characters..."
           [(ngModel)]="searchText"
         />
       
-        <ul class="chat-list">
-          <li *ngFor="let persona of filteredCharacters()">
-            <button class="chat-item" (click)="makeGuess(persona)">
-              {{ persona.name }}
-            </button>
-          </li>
-        </ul>
+        <div class="chat-list">
+            <div class="card-grid" *ngIf="allCharacters">
+            <div *ngFor="let persona of filteredCharacters()" class="card-wrapper">
+                <app-card
+                [name]="persona.name"
+                [era]="persona.era"
+                [baseContext]="persona.baseContext"
+                (click)="makeGuess(persona)">
+                </app-card>
+            </div>
+            </div>
+        </div>
       </div>
+
+      <div class="chat-sidebar" *ngIf="chats"> 
+        <ul class="chat-list">
+                <li>
+                    <button 
+                    class="chat-item"
+                    [routerLink]="['/']">
+                    Home
+                    </button>
+                </li>
+                <li>
+                    <button 
+                    class="chat-item"
+                    (click)="refresh()">
+                    Play again
+                    </button>
+                </li>
+        </ul>
+        <ul class="chat-list">
+            <h2 class="chat-title">Chat History:</h2>
+                <li *ngFor="let chat of chats">
+                    <button 
+                    class="chat-item"
+                    (click)="navigateToChat(chat._id)">
+                    {{ chat.title }}
+                    </button>
+                </li>
+        </ul>
+    </div>
+
+  
 </body>

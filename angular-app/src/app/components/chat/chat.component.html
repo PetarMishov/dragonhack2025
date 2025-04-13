@@ -9,14 +9,27 @@
         </ul>
       </div>
 
-      <div class="chat-sidebar" *ngIf="chats">
-        <ul class="chat-list" >
-          <li>
-            <button *ngFor="let chat of chats" class="chat-item" (click)="changeChat(chat._id)">{{ chat.title }}</button>
-
-          </li>
+      <div class="chat-sidebar" *ngIf="chats"> 
+        <ul class="chat-list">
+                <li>
+                    <button 
+                    class="chat-item"
+                    [routerLink]="['/']">
+                    Home
+                    </button>
+                </li>
         </ul>
-      </div>
+        <ul class="chat-list">
+            <h2 class="chat-title">Chat History:</h2>
+                <li *ngFor="let chat of chats">
+                    <button 
+                    class="chat-item"
+                    (click)="changeChat(chat._id)">
+                    {{ chat.title }}
+                    </button>
+                </li>
+        </ul>
+    </div>
 
       <div class="main-content" *ngIf="current_chat">
         <div

@@ -96,7 +96,11 @@ body {
   app-card {
     flex-shrink: 0;
   }
-  
+
+  .card-wrapper{
+    margin-top: 20px;
+  }
+
   .main-content {
     padding: 30px;
     color: var(--text-primary);
@@ -266,20 +270,23 @@ body {
   
 
   .character-sidebar {
-    width: 320px;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    background: transparent;
-    color: var(--text-primary);
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 10;
-    overflow-y: auto;
-    margin-top: 5vh;
-    scrollbar-width: none;
-  }
+  width: 320px;
+  max-width: 320px; /* ✅ prevent overflow */
+  height: 100%;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--text-primary);
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  overflow-y: auto;
+  margin-top: 5vh;
+  scrollbar-width: none;
+}
   
   .search-input {
     width: 100%;
@@ -290,6 +297,12 @@ body {
     background: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
     backdrop-filter: blur(6px);
+  }
+
+  .character-sidebar .chat-input {
+    width: 100%;           /* ✅ fills only the sidebar */
+    max-width: 100%;        /* ✅ won't overflow */
+    box-sizing: border-box; /* ✅ padding included in width */
   }
 
   .success-message {
@@ -354,5 +367,3 @@ body {
     from { transform: scale(0.5); }
     to { transform: scale(1); }
   }
-
-
