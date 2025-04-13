@@ -7,11 +7,12 @@ import { BackgroundComponent } from '../background/background/background.compone
 import { StartNewChatService } from '../../services/start-new-chat/start-new-chat.service.spec';
 import { Scenario } from '../../classes/scenario';
 import { GetScenariosService } from '../../services/get-scenarios/get-scenarios.service.spec';
+import { AppCardComponent } from '../app-card/app-card.component';
 
 @Component({
   selector: 'app-start',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, BackgroundComponent],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent, AppCardComponent],
   templateUrl: './start.component.html',
   styleUrl: './start.component.css'
 })

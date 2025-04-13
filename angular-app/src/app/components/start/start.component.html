@@ -1,22 +1,31 @@
-<router-outlet></router-outlet>
 <body>
     <app-background></app-background>
-    <div class="chat-sidebar" *ngIf="personas">
+    
+    <div class="main-container">
+      <!-- Left sidebar for chat -->
+      <div class="chat-sidebar" *ngIf="personas">
         <ul class="chat-list">
-            <li>
-                <button *ngFor="let persona of personas" class="chat-item"
-                    (click)="popupScenarios(persona)">{{ persona.name
-                    }}</button>
-            </li>
+          <li *ngFor="let persona of personas">
+            <button 
+              class="chat-item"
+              (click)="popupScenarios(persona)">
+              {{ persona.name }}
+            </button>
+          </li>
         </ul>
+      </div>
+  
+      <!-- Main content area with card grid -->
+      <div class="content-area">
+        <div class="card-grid" *ngIf="personas">
+          <div *ngFor="let persona of personas" class="card-wrapper">
+            <app-card
+              [name]="persona.name"
+              [era]="persona.era"
+              [baseContext]="persona.baseContext">
+            </app-card>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- <div class="scenario-sidebar" *ngIf="selected_persona">
-        <ul class="chat-list">
-            <li>
-                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
-                    scenario.title }}</button>
-            </li>
-        </ul>
-    </div> -->
-</body>
+  </body>
