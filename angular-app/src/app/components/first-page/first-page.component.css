@@ -1,0 +1,49 @@
+.welcome-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .logo {
+    position: absolute;
+    top: 20%;
+    width: 300px;
+    z-index: 10;
+  }
+  
+  .background-animation {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, #0d0c0b, #0d0c0b);
+    z-index: 0;
+    animation: floatBackground 15s linear infinite;
+  }
+  
+  @keyframes floatBackground {
+    0% {
+      transform: translate(0%, 0%);
+    }
+    50% {
+      transform: translate(-10%, -10%);
+    }
+    100% {
+      transform: translate(0%, 0%);
+    }
+  }
+  
+  .center-content {
+    top: 30%;
+    z-index: 5;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 200px;
+  }

@@ -1,0 +1,9 @@
+<div class="welcome-container">
+    <div class="background-animation"></div>
+    <img src="images/file.svg" alt="Echoes of Genius Logo" class="logo"/>
+  
+    <div class="center-content">
+      <mat-progress-bar *ngIf="!loadingComplete" style="color: primary; top: 200px;" mode="indeterminate" color="#0d0c0b"></mat-progress-bar>
+      <button mat-raised-button  style="color: #0d0c0b; top: 200px;" [disabled]="!loadingComplete" (click)="goToIndex()">Welcome</button>
+    </div>
+</div>
