@@ -5,50 +5,53 @@
     <div class="main-container">
       <!-- Left sidebar for chat -->
         <div class="chat-sidebar" *ngIf="personas"> 
-            <ul class="chat-list">
-                <li style="margin-bottom: 5%;">
-                    <h2 class="chat-title">New Chat Title:</h2>
-                    <input
-                    type="text"
-                    class="chat-input"
-                    placeholder="Conversation title"
-                    [(ngModel)]="title"
-                    />
-                </li>
-                <li>
-                    <div class="scenario-sidebar" *ngIf="selected_persona">
-                        <h2 class="chat-title">Chat Type:</h2>
-                        <ul class="chat-list-purple">
-                            <li>
-                                <button *ngFor="let scenario of persona_scenarios" class="chat-item-purple" (click)="startNewChat(selected_persona, scenario)">{{
-                                    scenario.title }}</button>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <h2 class="chat-title">Chat History:</h2>
-                <li *ngFor="let chat of chats">
-                    <button 
-                    class="chat-item"
-                    (click)="navigateToChat(chat._id)">
-                    {{ chat.title }}
-                    </button>
-                </li>
-            </ul>
+            <div class="sidebar-content">
+                <ul class="chat-list">
+                    <li style="margin-bottom: 5%;">
+                        <h2 class="chat-title">New Chat Title:</h2>
+                        <input
+                        style="width: 80%;"
+                        type="text"
+                        class="chat-input"
+                        placeholder="Conversation title"
+                        [(ngModel)]="title"
+                        />
+                    </li>
+                    <li>
+                        <div class="scenario-sidebar" *ngIf="selected_persona">
+                            <h2 class="chat-title">Chat Type:</h2>
+                            <ul class="chat-list-purple">
+                                <li>
+                                    <button *ngFor="let scenario of persona_scenarios" class="chat-item-purple" (click)="startNewChat(selected_persona, scenario)">{{
+                                        scenario.title }}</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <h2 class="chat-title">Chat History:</h2>
+                    <li *ngFor="let chat of chats">
+                        <button 
+                        class="chat-item"
+                        (click)="navigateToChat(chat._id)">
+                        {{ chat.title }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
 
       <!-- Main content area with card grid -->
         <div class="content-area">
             <div class="card-grid" *ngIf="personas">
-            <div *ngFor="let persona of personas" class="card-wrapper">
-                <app-card
-                [name]="persona.name"
-                [era]="persona.era"
-                [baseContext]="persona.baseContext"
-                (click)="popupScenarios(persona)">
-                </app-card>
-            </div>
+                <div *ngFor="let persona of personas" class="card-wrapper">
+                    <app-card
+                    [name]="persona.name"
+                    [era]="persona.era"
+                    [baseContext]="persona.baseContext"
+                    (click)="popupScenarios(persona)">
+                    </app-card>
+                </div>
             </div>
         </div>
     </div>
-  </body>
+</body>
