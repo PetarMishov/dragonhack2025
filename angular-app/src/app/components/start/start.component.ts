@@ -14,8 +14,7 @@ import { AppCardComponent } from '../app-card/app-card.component';
 @Component({
   selector: 'app-start',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, BackgroundComponent, FormsModule],
-  imports: [RouterOutlet, CommonModule, BackgroundComponent, AppCardComponent],
+  imports: [RouterOutlet, CommonModule, BackgroundComponent, AppCardComponent, FormsModule],
   templateUrl: './start.component.html',
   styleUrl: './start.component.css'
 })
