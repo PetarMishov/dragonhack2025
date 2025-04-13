@@ -1,0 +1,42 @@
+<router-outlet></router-outlet>
+<body>
+    <app-background></app-background>
+
+    <div class="main-content" *ngIf="game_id">
+        <div *ngFor="let message of messages" [ngClass]="{
+            'message-row': true,
+            'from-user': message.role === 'user',
+            'from-character': message.role === 'ai'
+          }">
+          <div class="message-bubble" [innerHTML]="message.content"></div>
+        </div>
+      </div>
+
+    <div class="chat-input-container">
+        <input
+          type="text"
+          class="chat-input"
+          placeholder="Send a message"
+          [(ngModel)]="newMessage"
+          (keydown.enter)="sendMessage()"
+        />
+      </div>
+
+
+      <div class="character-sidebar" *ngIf="allCharacters?.length">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search characters..."
+          [(ngModel)]="searchText"
+        />
+      
+        <ul class="chat-list">
+          <li *ngFor="let persona of filteredCharacters()">
+            <button class="chat-item" (click)="makeGuess(persona)">
+              {{ persona.name }}
+            </button>
+          </li>
+        </ul>
+      </div>
+</body>

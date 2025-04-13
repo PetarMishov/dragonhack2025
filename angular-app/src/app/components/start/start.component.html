@@ -13,6 +13,26 @@
             </button>
           </li>
         </ul>
+    </div>
+
+    <div class="scenario-sidebar" *ngIf="selected_persona">
+        <ul class="chat-list">
+            <li>
+                <button *ngFor="let scenario of persona_scenarios" class="chat-item" (click)="startNewChat(selected_persona, scenario)">{{
+                    scenario.title }}</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="chat-input-container">
+        <input
+          type="text"
+          class="chat-input"
+          placeholder="Conversation title"
+          [(ngModel)]="title"
+        />
+      </div>
+</body>
       </div>
   
       <!-- Main content area with card grid -->

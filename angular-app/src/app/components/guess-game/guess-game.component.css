@@ -264,3 +264,30 @@ body {
     border-bottom-left-radius: 4px;
   }
   
+
+  .character-sidebar {
+    width: 320px;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background: transparent;
+    color: var(--text-primary);
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    overflow-y: auto;
+    margin-top: 5vh;
+    scrollbar-width: none;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    backdrop-filter: blur(6px);
+  }
