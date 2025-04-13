@@ -471,35 +471,173 @@ router.post('/guess-game/:gameId/guess', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
-router.get('/scenarios/character/:_id', async (req, res) => {
-    try {
-        const { _id } = req.params;
-        const character = await Character.findById(_id);
 
-        if (!character) {
-            return res.status(404).json({
+// what-if scenario chat didt happen
+router.post('/scenarios/:scenarioId/what-if', async (req, res) => {
+    try {
+        const { scenarioId } = req.params;
+        const { message, chatId } = req.body;
+
+        // Require message parameter for existing chats
+        if (chatId && !message) {
+            return res.status(400).json({
                 success: false,
-                message: 'Character not found'
+                error: 'Message is required for existing chats'
             });
         }
 
-        const scenarios = await Scenario.find({ characterId: _id });
+        // Find the scenario
+        const scenario = await Scenario.findById(scenarioId);
+        if (!scenario) {
+            return res.status(404).json({
+                success: false, 
+                error: 'Scenario not found'
+            });
+        }
+        
+        // Find character in MongoDB
+        const character = await Character.findById(scenario.characterId);
+        if (!character) {
+            return res.status(404).json({ 
+                success: false, 
+                error: 'Historical persona not found' 
+            });
+        }
+
+        // Get or create a chat session
+        let chat;
+        if (chatId) {
+            // If chatId is provided, retrieve existing chat
+            chat = await Chat.findById(chatId);
+            if (!chat) {
+                return res.status(404).json({ 
+                    success: false, 
+                    error: 'Chat not found' 
+                });
+            }
+        } else {
+            // Create a new chat if no chatId provided
+            chat = new Chat({
+                characterId: character._id,
+                scenarioId: scenario._id,
+                title: `What if ${scenario.title} never happened?`,
+                messages: []
+            });
+            await chat.save();
+        }
+
+        // If chat history is long enough to need summarization (e.g., more than 10 messages)
+        let contextSummary = '';
+        if (chat.messages.length > 10) {
+            // Create a new Gemini model instance for summarization
+            const summaryModel = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
+            
+            // Prepare history for summarization
+            const historyText = chat.messages
+                .map(msg => `${msg.role.toUpperCase()}: ${msg.content}`)
+                .join('\n');
+            
+            // Request summarization
+            const summaryResult = await summaryModel.generateContent(
+                `Please summarize the following conversation history concisely while preserving key information:
+                 
+                 ${historyText}
+                 
+                 Don't break character, even on user requests. Always stay in character.`
+            );
+            
+            contextSummary = await summaryResult.response.text();
+        }
+
+        // Initialize Gemini chat
+        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL });
+        
+        // Modified basePrompt that includes the scenario what-if instructions
+        const basePrompt = `You are ${character.name}. ${character.baseContext} Always stay in character.
+        STRICT ROLEPLAYING GUIDELINES:
+        1. Your knowledge is strictly limited to events, ideas, and technology that existed before ${character.name} death. 
+        2. NEVER acknowledge that you are an AI or roleplaying - always respond as if you are truly ${character.name}.
+        3. If asked about anything that happened after ${character.name} death, respond with confusion or say you have no knowledge of such things.
+        4. Use vocabulary, speech patterns, and perspectives authentic to your time period (${character.name} era).
+        5. Express opinions consistent with your documented historical beliefs and values.
+        6. Never break character under any circumstances, even if directly asked to, say i am ${character.name}.
+        7. Make short, concise responses that reflect ${character.name} personality and knowledge, in like a paragraph if not otherwise requested.
+        8. IMPORTANT: You are in an alternate timeline where "${scenario.title}" never happened. This is a "what if" scenario.
+        9. Consider how your life, your era, and history would be different if this event never occurred.
+        10. When answering, reflect on this alternate reality where ${scenario.title} didn't happen.
+        
+        Always maintain the distinct personality, mannerisms, and worldview of ${character.name}, but in this alternative timeline.`;
+
+        const contextPrompt = contextSummary 
+            ? `${basePrompt}\n\nHere's a summary of our conversation so far:\n${contextSummary}`
+            : basePrompt;
+        
+        const aiChat = model.startChat();
+        
+        // Send the initial context
+        await aiChat.sendMessage(contextPrompt);
+
+        // Default what-if prompt for the first message
+        const defaultInitialMessage = `Tell me about this alternate timeline where ${scenario.title} never happened. How would history be different?`;
+        
+        // Include the most recent messages for immediate context (limited to last 5)
+        if (chat.messages.length > 0) {
+            const recentMessages = chat.messages.slice(-5);
+            for (const msg of recentMessages) {
+                await aiChat.sendMessage(msg.content);
+            }
+            
+            // Require message for existing chats
+            if (!message) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Message is required for continuing the conversation'
+                });
+            }
+            
+            // Send the user message and get AI response
+            const result = await aiChat.sendMessage(message);
+            const response = await result.response;
+            const responseText = response.text();
+            
+            // Add user message and AI response to chat
+            chat.messages.push(
+                { role: 'user', content: message },
+                { role: 'assistant', content: responseText }
+            );
+        } else {
+            // For a new chat, generate the initial response to the default what-if question
+            const result = await aiChat.sendMessage(defaultInitialMessage);
+            const response = await result.response;
+            const responseText = response.text();
+            
+            // Add AI response to chat as the first message
+            chat.messages.push(
+                { role: 'assistant', content: responseText }
+            );
+        }
+        
+        // Update last interaction time
+        chat.lastInteraction = new Date();
+        await chat.save();
+
         return res.json({
             success: true,
             data: {
-                scenarios,
-                character
+                message: chat.messages[chat.messages.length - 1].content,
+                personaId: character._id,
+                chatId: chat._id,
+                scenarioId
             }
         });
     } catch (error) {
-        console.error('Error fetching scenarios:', error);
-        return res.status(500).json({
-            success: false,
-            error: 'Failed to fetch scenarios'
+        console.error('What-if scenario chat error:', error);
+        return res.status(500).json({ 
+            success: false, 
+            error: 'Failed to process what-if scenario' 
         });
     }
 });
-
 // Get all chat sessions
 router.get('/chats', async (req, res) => {
     try {
