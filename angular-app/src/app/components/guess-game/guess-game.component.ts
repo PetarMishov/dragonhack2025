@@ -7,6 +7,7 @@ import { StartGuessGameService } from '../../services/start-guess-game/start-gue
 import { GameResponseData } from '../../classes/game';
 import { AskQuestionService } from '../../services/ask-question/ask-question.service.spec';
 import { QuestionResponse } from '../../classes/game';
+import { Character } from '../../classes/character';
 
 @Component({
   selector: 'app-guess-game',
@@ -44,5 +45,9 @@ export class GuessGameComponent {
     })
     
     this.newMessage = '';
+  }
+
+  makeGuess(persona : Character): void{
+
   }
 }
