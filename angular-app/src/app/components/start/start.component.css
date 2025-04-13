@@ -6,27 +6,6 @@ body {
   overflow: hidden;
 }
 
-#bg-video {
-  position: absolute;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 0;
-}
-
 /* Main container layout */
 .main-container {
   display: flex;
@@ -151,10 +130,11 @@ app-card {
 .card-wrapper {
   display: flex;
   justify-content: center;
+  height: 350px; /* Match the height of the example-card */
 }
 
 /* Card component styling adjustments */
 app-card {
   width: 100%;
-  min-height: 200px;
+  height: 100%;
 }

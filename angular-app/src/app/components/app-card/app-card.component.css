@@ -1,6 +1,6 @@
 .example-card {
   position: relative;
-  height: 100%;
+  height: 350px; /* Increased height to fit more content */
   width: 100%;
   background-color: rgba(18, 18, 18, 0.9);
   color: #fff;
@@ -36,6 +36,7 @@
   background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  padding: 16px;
 }
 
 .example-card:hover .card-header {
@@ -49,12 +50,15 @@
 }
 
 .video-container {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: black;
   border-radius: 8px;
   overflow: hidden;
+  z-index: 0;
 }
 
 video {
@@ -65,16 +69,45 @@ video {
 }
 
 mat-card-content {
-  position: relative;
-  background-color: rgba(0,0,0,0.7);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.85);
   opacity: 0;
   transition: opacity 0.3s ease;
-  border-radius: 8px;
+  border-radius: 0 0 8px 8px;
   backdrop-filter: blur(4px);
+  padding: 16px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  max-height: 75%; /* Limit height but allow text to display */
+  overflow-y: auto; /* Add scroll if absolutely necessary */
+}
+
+mat-card-content p {
+  margin-bottom: 16px;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  white-space: normal; /* Ensure text wraps */
+  word-wrap: break-word; /* Break long words if needed */
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: 100%; /* Ensure the paragraph takes full width */
 }
 
 .example-card:hover mat-card-content {
   opacity: 1;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  margin-top: auto; /* Push buttons to bottom */
 }
 
 mat-card-content button {
@@ -94,4 +127,3 @@ mat-card-content button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-

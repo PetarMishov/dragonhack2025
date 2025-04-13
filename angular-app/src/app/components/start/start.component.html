@@ -28,8 +28,7 @@
                 <h2 class="chat-title">Chat History:</h2>
                 <li *ngFor="let persona of personas">
                     <button 
-                    class="chat-item"
-                    (click)="popupScenarios(persona)">
+                    class="chat-item">
                     {{ persona.name }}
                     </button>
                 </li>
@@ -43,7 +42,8 @@
                 <app-card
                 [name]="persona.name"
                 [era]="persona.era"
-                [baseContext]="persona.baseContext">
+                [baseContext]="persona.baseContext"
+                (click)="popupScenarios(persona)">
                 </app-card>
             </div>
             </div>
